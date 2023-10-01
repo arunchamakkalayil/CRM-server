@@ -15,7 +15,7 @@ router.post("/EmployeeRegistration", empReg);
 router.post('/EmployeeLogin', empLogin);
 
 // user valid
-router.get("/validuser",authenticate,async(req,res)=>{
+router.get("/dashboard",authenticate,async(req,res)=>{
 console.log("done")
 })
 
