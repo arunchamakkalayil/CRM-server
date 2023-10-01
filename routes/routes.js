@@ -1,16 +1,22 @@
-const {empReg} = require('../controllers/formController')
+const {empReg,empLogin} = require('../controllers/formController')
 const express = require("express")
+const authenticate = require("../middleware/authenticate")
 
 //router object
 const router = new express.Router()
 
 // Routes
 
-// Employee Registration Form Route
+
+// Employee Registration Route.
 router.post("/EmployeeRegistration", empReg);
 
-// Employee Login Form Route
+// Employee Login Route.
+router.post('/EmployeeLogin', empLogin);
 
-
+// user valid
+router.get("/validuser",authenticate,async(req,res)=>{
+console.log("done")
+})
 
 module.exports = router
