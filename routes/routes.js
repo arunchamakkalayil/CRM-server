@@ -1,12 +1,12 @@
-const {empReg,empLogin} = require('../controllers/formController')
+const {empReg,empLogin,validateToken} = require('../controllers/formController')
 const express = require("express")
-const authenticate = require("../middleware/authenticate")
+
+
 
 //router object
 const router = new express.Router()
 
 // Routes
-
 
 // Employee Registration Route.
 router.post("/EmployeeRegistration", empReg);
@@ -15,8 +15,6 @@ router.post("/EmployeeRegistration", empReg);
 router.post('/EmployeeLogin', empLogin);
 
 // user valid
-router.get("/dashboard",authenticate,async(req,res)=>{
-console.log("done")
-})
+router.post("/validateToken",validateToken)
 
 module.exports = router
