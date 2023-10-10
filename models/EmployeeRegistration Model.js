@@ -35,14 +35,7 @@ const EmpRegSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true,
-      },
-    },
-  ],
+  
 });
 
 // /token generation
@@ -51,10 +44,6 @@ EmpRegSchema.methods.generateAuthtoken = async function () {
     let tokenGen = jwt.sign({ _id: this._id }, keysecret, {
       expiresIn: "1d",
     });
-
-    this.tokens = this.tokens.concat({ token: tokenGen });
-    await this.save();
-    console.log(tokenGen);
     return tokenGen;
   } catch (error) {
     console.log(error);

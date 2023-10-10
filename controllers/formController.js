@@ -1,6 +1,7 @@
 const EmployeeRegistration = require("../models/EmployeeRegistration Model");
+const Customer = require("../models/Customerdata");
 const bcrypt = require("bcryptjs");
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const keysecret = "keyfortokensecret";
 
 //Employee Registration
@@ -93,14 +94,14 @@ empLogin = async (req, res) => {
 validateToken = async (req, res) => {
   // Get the token from the Authorization header
   const authHeader = req.headers.authorization;
-console.log(authHeader)
+  console.log(authHeader);
   // Check if the Authorization header is present
   if (!authHeader) {
-    return res.status(401).json({ message: 'Authorization header missing' });
+    return res.status(401).json({ message: "Authorization header missing" });
   }
 
   // Extract the token from the Authorization header (assuming it's in the format "Bearer <token>")
-  const token = authHeader.split(' ')[1];
+  const token = authHeader.split(" ")[1];
 
   try {
     // Verify and decode the token
@@ -110,15 +111,17 @@ console.log(authHeader)
     console.log(decodedToken);
 
     // Continue with your token validation logic here...
-    
+
     // If validation is successful, send a success response
-    res.status(200).json({ message: 'Token is valid' });
+    res.status(200).json({ message: "Token is valid" });
   } catch (error) {
     // If verification fails, send an error response
-    console.error('Error validating token:', error);
-    res.status(401).json({ message: 'Token is invalid' });
+    console.error("Error validating token:", error);
+    res.status(401).json({ message: "Token is invalid" });
   }
 };
+
+
 
 
 module.exports = { empReg, empLogin, validateToken };

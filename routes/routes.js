@@ -1,4 +1,5 @@
 const {empReg,empLogin,validateToken} = require('../controllers/formController')
+const {deleteData,getData, addData,updateDate} = require("../controllers/dataController")
 const express = require("express")
 
 
@@ -16,5 +17,18 @@ router.post('/EmployeeLogin', empLogin);
 
 // user valid
 router.post("/validateToken",validateToken)
+
+//add data
+router.post("/create",addData)
+
+//get data
+router.get("/userdata",getData)
+
+// delete item
+
+router.delete("/userdata/:itemId",deleteData)
+
+//update item
+router.put('/userdata/:id', updateDate)
 
 module.exports = router
