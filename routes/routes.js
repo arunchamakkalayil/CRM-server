@@ -1,5 +1,5 @@
 const {empReg,empLogin,validateToken} = require('../controllers/formController')
-const {deleteData,getData, addData,updateDate} = require("../controllers/dataController")
+const {deleteData,getData, addData,updateDate, countData} = require("../controllers/dataController")
 const express = require("express")
 
 
@@ -30,5 +30,8 @@ router.delete("/userdata/:itemId",deleteData)
 
 //update item
 router.put('/userdata/:id', updateDate)
+
+//get count
+router.get("/count",countData)
 
 module.exports = router

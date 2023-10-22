@@ -30,7 +30,7 @@ deleteData = async (req, res) => {
 };
 
 addData = async (req, res) => {
-  const { name, email, phone } = req.body;
+  const { name, email, phone, status } = req.body;
 
   try {
     // Create a new instance of the Data model
@@ -38,6 +38,7 @@ addData = async (req, res) => {
       name,
       email,
       phone,
+      status,
     });
 
     // Save the data to the database
@@ -58,12 +59,12 @@ addData = async (req, res) => {
 
 updateDate = async (req, res) => {
   const { id } = req.params;
-  const { name, email, phone } = req.body;
+  const { name, email, phone, status } = req.body;
 
   try {
     const updatedData = await Customer.findByIdAndUpdate(
       id,
-      { name, email, phone },
+      { name, email, phone, status },
       { new: true }
     );
 
@@ -78,4 +79,28 @@ updateDate = async (req, res) => {
   }
 };
 
-module.exports = { getData, deleteData, addData, updateDate };
+countData=async(req,res)=>{
+
+  try {
+    const closedLeadsCount = await Customer.countDocuments({ status: "closed" });
+    const pendingLeadsCount = await Customer.countDocuments({ status: "pending" });
+    const notConnectedLeadsCount = await Customer.countDocuments({ status: "not_connected" });
+
+    const totalLeadsCount = closedLeadsCount + pendingLeadsCount + notConnectedLeadsCount;
+
+  res.status(200).json({
+      status: "success",
+      data: {
+        closed: closedLeadsCount,
+        pending: pendingLeadsCount,
+        not_connected: notConnectedLeadsCount,
+        total: totalLeadsCount,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+   res.status(500).json({ error: "Internal server error" });
+  }
+}
+
+module.exports = { getData, deleteData, addData, updateDate , countData};
