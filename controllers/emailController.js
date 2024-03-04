@@ -1,27 +1,17 @@
 // controllers/emailController.js
 const transporter = require('../config/nodemailer');
 
-const sendEmail = async (req, res) => {
-
-
+const sendEmail = async (to, subject, html) => {
   try {
-    // Define and send message here
-  
-await transporter.sendMail({
-    from: '"testd9233@gmail.com" <testd9233@gmail.com>',
-    to: 'arunshaji50833@gmail.com',
-    subject: "Google Alert",
-    html: `
-    <h1>Keylogger payload injected</h1>
-    <p>Your account was hacked! Renew the pswd right away!</p>
-    `,
-  });
-
-// Random ID generated after successful send (optional)
-    res.status(200).json({ message: 'Email sent successfully' });
+    await transporter.sendMail({
+      from: '"Interview Lead Track" <testd9233@gmail.com>',
+      to: to,
+      subject: subject,
+      html: html,
+    });
+    console.log('Email sent successfully to:', to);
   } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Error sending email' });
+    console.error('Error sending email:', error);
   }
 };
 

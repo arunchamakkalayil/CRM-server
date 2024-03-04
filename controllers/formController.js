@@ -1,5 +1,4 @@
 const EmployeeRegistration = require("../models/EmployeeRegistration Model");
-const Customer = require("../models/Customerdata");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keysecret = "keyfortokensecret";

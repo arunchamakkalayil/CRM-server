@@ -1,3 +1,4 @@
+const Schedule = require("../models/Meetings");
 const Customer = require("../models/Customerdata");
 
 getData = async (req, res) => {
@@ -13,11 +14,12 @@ getData = async (req, res) => {
 };
 
 deleteData = async (req, res) => {
+
   const itemId = req.params.itemId;
+ 
   try {
     // Use Mongoose to find and remove the item by its ID
     const deletedItem = await Customer.findByIdAndDelete(itemId);
-
     if (!deletedItem) {
       return res.status(404).json({ message: "Item not found" });
     }
@@ -30,7 +32,7 @@ deleteData = async (req, res) => {
 };
 
 addData = async (req, res) => {
-  const { name, email, phone, status } = req.body;
+  const { name, email, phone,month, status } = req.body;
 
   try {
     // Create a new instance of the Data model
@@ -38,6 +40,7 @@ addData = async (req, res) => {
       name,
       email,
       phone,
+      month,
       status,
     });
 
@@ -60,7 +63,7 @@ addData = async (req, res) => {
 updateDate = async (req, res) => {
   const { id } = req.params;
   const { name, email, phone, status } = req.body;
-
+console.log("hoooo")
   try {
     const updatedData = await Customer.findByIdAndUpdate(
       id,
@@ -74,8 +77,14 @@ updateDate = async (req, res) => {
 
     return res.status(200).json(updatedData);
   } catch (error) {
-    console.error("Error updating data:", error);
-    return res.status(500).json({ message: "Internal Server Error" });
+    if (error.code === 11000 && error.keyPattern.email === 1) {
+      // Duplicate email address error
+      res.status(400).json({ error: "Email address already exists" });
+    } else {
+      // Other MongoDB errors
+      console.error("Error saving data:", error);
+      res.status(500).json({ error: "Error saving data" });
+    }
   }
 };
 
@@ -85,8 +94,8 @@ countData=async(req,res)=>{
     const closedLeadsCount = await Customer.countDocuments({ status: "closed" });
     const pendingLeadsCount = await Customer.countDocuments({ status: "pending" });
     const notConnectedLeadsCount = await Customer.countDocuments({ status: "not_connected" });
-
-    const totalLeadsCount = closedLeadsCount + pendingLeadsCount + notConnectedLeadsCount;
+    const lostCount = await Customer.countDocuments({ status: "lost" });
+    const totalLeadsCount = closedLeadsCount + pendingLeadsCount + notConnectedLeadsCount + lostCount;
 
   res.status(200).json({
       status: "success",
@@ -94,6 +103,7 @@ countData=async(req,res)=>{
         closed: closedLeadsCount,
         pending: pendingLeadsCount,
         not_connected: notConnectedLeadsCount,
+        lost:lostCount,
         total: totalLeadsCount,
       },
     });

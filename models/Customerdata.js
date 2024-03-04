@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const customerSchema = new mongoose.Schema({
   name: {
     type: String,
-    trim: true,
+   
 
   },
   email: {
@@ -14,6 +14,9 @@ const customerSchema = new mongoose.Schema({
   phone: {
     type: String,
  
+  },
+  month:{
+    type:String,
   },
   status: {
     type: String,

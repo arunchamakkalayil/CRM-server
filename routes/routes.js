@@ -1,5 +1,6 @@
 const {empReg,empLogin,validateToken} = require('../controllers/formController')
 const {deleteData,getData, addData,updateDate, countData} = require("../controllers/dataController")
+const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
 const express = require("express")
 
 
@@ -18,20 +19,32 @@ router.post('/EmployeeLogin', empLogin);
 // user valid
 router.post("/validateToken",validateToken)
 
-//add data
+//add leads data
 router.post("/create",addData)
 
-//get data
+//get leads data
 router.get("/userdata",getData)
 
-// delete item
+// delete leads 
 
 router.delete("/userdata/:itemId",deleteData)
 
-//update item
+//update leads item
 router.put('/userdata/:id', updateDate)
 
-//get count
+// leads count
 router.get("/count",countData)
+
+// add schedules
+router.post("/scheduleform",addScheduleData)
+
+// get schedules
+router.get("/schedule",getScheduleData)
+
+// upt schedule
+router.put('/schedule/:id', updateSchedule)
+
+// Delete scheduled item route
+router.delete('/schedule/:id', deleteSchedule);
 
 module.exports = router
