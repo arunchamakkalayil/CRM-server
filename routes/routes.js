@@ -1,6 +1,7 @@
 const {empReg,empLogin,validateToken} = require('../controllers/formController')
 const {deleteData,getData, addData,updateDate, countData} = require("../controllers/dataController")
 const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
+const {autoEmail}=require('../controllers/autoMail')
 const express = require("express")
 
 
@@ -46,5 +47,7 @@ router.put('/schedule/:id', updateSchedule)
 
 // Delete scheduled item route
 router.delete('/schedule/:id', deleteSchedule);
+//send email
+router.post('/email',autoEmail)
 
 module.exports = router
