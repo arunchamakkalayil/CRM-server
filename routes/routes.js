@@ -1,5 +1,5 @@
 const {empReg,empLogin,validateToken} = require('../controllers/formController')
-const {deleteData,getData, addData,updateDate, countData} = require("../controllers/dataController")
+const {deleteData,getData, addData,updateDate,addExcel, countData,monthCount} = require("../controllers/dataController")
 const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
 const {autoEmail}=require('../controllers/autoMail')
 const express = require("express")
@@ -20,8 +20,11 @@ router.post('/EmployeeLogin', empLogin);
 // user valid
 router.post("/validateToken",validateToken)
 
+//add excel data
+router.post("/excelData",addExcel)
+
 //add leads data
-router.post("/create",addData)
+router.post("/addData",addData)
 
 //get leads data
 router.get("/userdata",getData)
@@ -47,7 +50,11 @@ router.put('/schedule/:id', updateSchedule)
 
 // Delete scheduled item route
 router.delete('/schedule/:id', deleteSchedule);
+
 //send email
 router.post('/email',autoEmail)
+
+//monthcount
+router.get('/monthCount',monthCount)
 
 module.exports = router
