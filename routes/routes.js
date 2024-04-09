@@ -1,4 +1,4 @@
-const {empReg,empLogin,validateToken} = require('../controllers/formController')
+const {empReg,empLogin,validateToken,verifyEmail} = require('../controllers/formController')
 const {deleteData,getData, addData,updateDate,addExcel, countData,monthCount} = require("../controllers/dataController")
 const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
 const {autoEmail}=require('../controllers/autoMail')
@@ -56,5 +56,11 @@ router.post('/email',autoEmail)
 
 //monthcount
 router.get('/monthCount',monthCount)
+
+
+// Define the verification endpoint
+// Define the verification endpoint
+router.get('/verify-email/:token', verifyEmail);
+
 
 module.exports = router

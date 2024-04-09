@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 
 // EmployeeRegistration Schema
 
-const keysecret = "keyfortokensecret";
 
 const EmpRegSchema = new mongoose.Schema({
   name: {
@@ -35,13 +34,21 @@ const EmpRegSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  verificationToken:{
+    type:String,
+    required:true
+  },
+   isVerified: {
+    type: Boolean,
+    default: false 
+  }
   
 });
 
 // /token generation
 EmpRegSchema.methods.generateAuthtoken = async function () {
   try {
-    let tokenGen = jwt.sign({ _id: this._id }, keysecret, {
+    let tokenGen = jwt.sign({ _id: this._id }, process.env.SECRET, {
       expiresIn: "1d",
     });
     return tokenGen;
