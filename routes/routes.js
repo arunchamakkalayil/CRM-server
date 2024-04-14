@@ -1,4 +1,4 @@
-const {empReg,empLogin,validateToken,verifyEmail} = require('../controllers/formController')
+const {empReg,empLogin,validateToken,verifyEmail,resetPassword,newPassword,validateTokenReset} = require('../controllers/formController')
 const {deleteData,getData, addData,updateDate,addExcel, countData,monthCount} = require("../controllers/dataController")
 const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
 const {autoEmail}=require('../controllers/autoMail')
@@ -58,9 +58,18 @@ router.post('/email',autoEmail)
 router.get('/monthCount',monthCount)
 
 
-// Define the verification endpoint
+
 // Define the verification endpoint
 router.get('/verify-email/:token', verifyEmail);
 
+//email link to reset password
+router.post('/resetpassword',resetPassword)
+
+///new password
+router.post('/reset-password/:token',newPassword)
+
+//token for reset
+
+router.get("/validate-token/:token",validateTokenReset)
 
 module.exports = router
