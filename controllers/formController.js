@@ -43,7 +43,7 @@ empReg = async (req, res) => {
     await newEmployee.save();
 
     // Send verification email
-    const verificationLink = `${BASE_URL}/verify-email/${verificationToken}`;
+    const verificationLink = `${process.env.BASE_URL}/verify-email/${verificationToken}`;
     await sendVerificationEmail(newEmployee.email, verificationLink);
 
     // Send response
@@ -97,7 +97,7 @@ await user.save();
 
     
     // Send verification email
-    const verificationLink = `${BASE_URL}/verify-email/${verificationTokenLogin}`;
+    const verificationLink = `${process.env.BASE_URL}/verify-email/${verificationTokenLogin}`;
     await sendVerificationEmail(email, verificationLink);
       // If email is not verified
       return res.status(403).json({ message: "Email is not verified. Please verify your email before logging in." });
