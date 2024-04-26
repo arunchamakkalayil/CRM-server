@@ -43,7 +43,7 @@ empReg = async (req, res) => {
     await newEmployee.save();
 
     // Send verification email
-    const verificationLink = `http://localhost:3000/verify-email/${verificationToken}`;
+    const verificationLink = `${BASE_URL}/verify-email/${verificationToken}`;
     await sendVerificationEmail(newEmployee.email, verificationLink);
 
     // Send response
