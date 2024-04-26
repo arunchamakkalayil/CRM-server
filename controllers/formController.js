@@ -97,7 +97,7 @@ await user.save();
 
     
     // Send verification email
-    const verificationLink = `http://localhost:3000/verify-email/${verificationTokenLogin}`;
+    const verificationLink = `${BASE_URL}/verify-email/${verificationTokenLogin}`;
     await sendVerificationEmail(email, verificationLink);
       // If email is not verified
       return res.status(403).json({ message: "Email is not verified. Please verify your email before logging in." });
