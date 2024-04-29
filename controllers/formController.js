@@ -15,11 +15,29 @@ empReg = async (req, res) => {
   }
 
   try {
+    // Check if user with email exists
     const existingUser = await EmployeeRegistration.findOne({ email: email });
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "User with this email already exists" });
+      // If email is already verified, return user already exists error
+      if (existingUser.isVerified) {
+        return res
+          .status(400)
+          .json({ message: "User with this email already exists" });
+      } else {
+        // Update existing user data with new information
+        existingUser.name = name;
+        existingUser.empid = empid;
+        existingUser.password = await bcrypt.hash(password, 10);
+        existingUser.phone = phone;
+        existingUser.verificationToken = uuidv4(); // Generate new verification token
+        await existingUser.save();
+
+        // Send verification email with new verification link
+        const verificationLink = `${process.env.BASE_URL}/verify-email/${existingUser.verificationToken}`;
+        await sendVerificationEmail(existingUser.email, verificationLink);
+
+        return res.status(200).json({ message: "User updated. Please verify your email." });
+      }
     }
 
     // Generate verification token
@@ -27,8 +45,7 @@ empReg = async (req, res) => {
 
     // Hashing password
     const hashedPass = await bcrypt.hash(password, 10);
-    console.log("Password hashed");
-
+    
     // Create new employee instance
     const newEmployee = new EmployeeRegistration({
       name,
@@ -38,7 +55,7 @@ empReg = async (req, res) => {
       phone,
       verificationToken,
     });
-    console.log(verificationToken);
+
     // Save the new employee
     await newEmployee.save();
 
@@ -53,6 +70,7 @@ empReg = async (req, res) => {
     res.status(500).json({ message: "Error during registration" });
   }
 };
+
 
 // Function to send verification email
 const sendVerificationEmail = async (email, verificationLink) => {
@@ -202,7 +220,7 @@ const sendResetPasswordEmail = async (email, resetLink) => {
       from: '"LeadTracker" <noreply@example.com>',
       to: email,
       subject: "Reset Password",
-      html: `Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a>`,
+      html: `Click the following link to reset your password: <a href="${resetLink}">${resetLink}</a><br>Link will expire in 5 minutes`,
     });
     console.log("Reset password email sent");
   } catch (error) {
@@ -244,7 +262,7 @@ resetPassword = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "Reset password instructions sent to your email" });
+      .json({ message: "Link to reset password was sent to your mail" });
   } catch (error) {
     console.error("Error resetting password:", error);
     return res

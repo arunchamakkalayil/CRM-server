@@ -48,7 +48,14 @@ const scheduleEmailReminder = (email, emailTime, subject,recipientName,meetLink)
     // If the delay is positive, schedule sending the email
     setTimeout(async () => {
       try {
-        const emailContent = `<h1>Reminder</h1><br><p>Hello ${recipientName},</p><p>Meeting Link</P><a href="${meetLink}">${meetLink}</a>`;
+        const emailContent = `
+        <h1>Reminder</h1>
+        <p>Dear ${recipientName},</p>
+        <p>This is a reminder for your meeting. Please join using the following link:</p>
+        <a href="${meetLink}">${meetLink}</a>
+        <p>Best regards,</p>
+        <p>Your Organization</p>
+      `;
         await sendEmail(email, subject, emailContent);
         console.log('Reminder email sent to:', email);
       } catch (error) {

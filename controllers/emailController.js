@@ -4,7 +4,7 @@ const transporter = require('../config/nodemailer');
 const sendEmail = async (to, subject, html) => {
   try {
     await transporter.sendMail({
-      from: '"Interview Lead Track" <testd9233@gmail.com>',
+      from: '"Interview Mail" <testd9233@gmail.com>',
       to: to,
       subject: subject,
       html: html,
