@@ -1,10 +1,19 @@
-const Schedule = require("../models/Meetings");
+const Contact = require("../models/Contact");
 const Customer = require("../models/Customerdata");
+const Place = require('../models/Place');
 
 getData = async (req, res) => {
   try {
-    // Fetch data from your MongoDB collection
-    const data = await Customer.find({});
+    const status = req.query.status || null;
+    let query = {};
+
+    // If status is provided, add it to the query object
+    if (status) {
+      query.status = status;
+    }
+
+    // Fetch data from your MongoDB collection based on the query
+    const data = await Customer.find(query);
 // Logging the data before sending the response
     res.status(200).json({ message: "success", data });
   } catch (error) {
@@ -33,15 +42,15 @@ deleteData = async (req, res) => {
 
 addData = async (req, res) => {
   console.log(req.body)
-  const { name, email, phone,month, status } = req.body;
+  const { item, quantity, place,phone, status } = req.body;
 
   try {
     // Create a new instance of the Data model
     const newData = new Customer({
-      name,
-      email,
+      item,
+      quantity,
+      place,
       phone,
-      month,
       status,
     });
 
@@ -63,12 +72,12 @@ addData = async (req, res) => {
 
 updateDate = async (req, res) => {
   const { id } = req.params;
-  const { name, email, phone, status ,month} = req.body;
+  const { item, quantity, place,phone, status } = req.body;
 console.log("hoooo")
   try {
     const updatedData = await Customer.findByIdAndUpdate(
       id,
-      { name, email, phone, status,month },
+      { item, quantity, place,phone, status },
       { new: true }
     );
 
@@ -172,7 +181,58 @@ console.log(monthCounts)
     res.status(500).json({ error: "Internal server error" });
   }
 };
+addCamp = async (req, res) => {
+  console.log(req.body)
+  const { name } = req.body;
+
+  try {
+    // Create a new instance of the Data model
+    const newCamp = new Place({
+name,
+    });
+
+    // Save the data to the database
+    await newCamp.save();
+
+    res.status(201).json({ message: "Data saved successfully" });
+  } catch (error) {
+    if (error.code === 11000 && error.keyPattern.email === 1) {
+      // Duplicate email address error
+      res.status(400).json({ error: "Data already exists" });
+    } else {
+      // Other MongoDB errors
+      console.error("Error saving data:", error);
+      res.status(500).json({ error: "Error saving data" });
+    }
+  }
+};
+const getCamp = async (req, res) => {
+  try {
+    const places = await Place.find({}); // Fetch all places from the collection
+    res.status(200).json(places);
+  } catch (error) {
+    console.error('Error fetching places:', error);
+    res.status(500).json({ error: 'Error fetching places' });
+  }
+};
+deleteCamp = async (req, res) => {
+
+  const { id } = req.params;
+    
+ 
+  try {
+
+    const result = await Place.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    res.status(200).json({ message: "Item deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting item:", error);
+    res.status(500).json({ error: "Error deleting item" });
+  }
+};
 
 
-
-module.exports = { getData, deleteData, addData, addExcel, updateDate , countData,monthCount};
+module.exports = { getData,deleteCamp, getCamp, addCamp, deleteData, addData, addExcel, updateDate , countData,monthCount};

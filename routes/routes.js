@@ -1,6 +1,6 @@
 const {empReg,empLogin,validateToken,verifyEmail,resetPassword,newPassword,validateTokenReset} = require('../controllers/formController')
-const {deleteData,getData, addData,updateDate,addExcel, countData,monthCount} = require("../controllers/dataController")
-const {addScheduleData,getScheduleData,updateSchedule,deleteSchedule} = require('../controllers/scheduleController')
+const {deleteData,getData,updateCamp, deleteCamp, addData,updateDate,addExcel, countData,monthCount, getCamp, addCamp} = require("../controllers/dataController")
+const {addContactData,getContactData,updateContact,deleteContact, getContacts} = require('../controllers/ContactController')
 const {autoEmail}=require('../controllers/autoMail')
 const express = require("express")
 
@@ -39,17 +39,17 @@ router.put('/userdata/:id', updateDate)
 // leads count
 router.get("/count",countData)
 
-// add schedules
-router.post("/scheduleform",addScheduleData)
+// add Contacts
+router.post("/contactform",addContactData)
 
-// get schedules
-router.get("/schedule",getScheduleData)
+// get Contacts
+router.get("/contact",getContactData)
 
-// upt schedule
-router.put('/schedule/:id', updateSchedule)
+// upt Contact
+router.put('/contact/:id', updateContact)
 
-// Delete scheduled item route
-router.delete('/schedule/:id', deleteSchedule);
+// Delete Contactd item route
+router.delete('/contact/:id', deleteContact);
 
 //send email
 router.post('/email',autoEmail)
@@ -57,8 +57,11 @@ router.post('/email',autoEmail)
 //monthcount
 router.get('/monthCount',monthCount)
 
+router.get('/camps',getCamp)
+router.post('/addcamp',addCamp)
+router.delete('/camps/:id', deleteCamp);
 
-
+router.get('/contact-numbers',getContacts)
 // Define the verification endpoint
 router.get('/verify-email/:token', verifyEmail);
 
