@@ -84,7 +84,7 @@ const getContacts = async (req, res) => {
       return res.status(400).json({ error: 'Place is required' });
     }
     // Find contacts matching the place
-    const contacts = await Contact.find({ place: { $type: 'string' } })
+    const contacts = await Contact.find({ place })
     console.log('Found contacts:', contacts);
 
     if (contacts.length === 0) {
